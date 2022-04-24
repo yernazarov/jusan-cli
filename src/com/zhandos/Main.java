@@ -14,19 +14,18 @@ public class Main {
                 System.out.println(obj.nextLine());
             }
 
-            FileWriter write_file = new FileWriter("log.txt", true);
+            MyFile file = new MyFile();
             Scanner scanner = new Scanner(System.in);
-            System.out.printf("> ");
             while (true) {
+                System.out.printf("> ");
                 String line = scanner.nextLine();
-                if (line.equals("Выход")) {
-                    write_file.close();
-                    File log_file = new File("log.txt");
-                    log_file.delete();
-                    return;
+                String words[] = line.split(" ", 2);
+                if (words[0].equals("ls")) {
+                    file.listDirectory(words[1]);
+                } else if (words[0].equals("exit")) {
+                    file.exit();
                 }
-                write_file.write(line + "\n");
-                System.out.println(line);
+//                System.out.println(line);
             }
         } catch (Exception e) {
             System.out.printf("%s", e);

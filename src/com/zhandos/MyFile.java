@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 class MyFile {
     // выводит список всех файлов и директорий для `path` - ls
-    public static void listDirectory(String path) {
+    public static void listDirectory(String path) { //TODO only ls without path
         try {
             File file = new File(path);
             String[] fileList = file.list();
@@ -19,7 +19,15 @@ class MyFile {
 
     // выводит список файлов с расширением `.py` в `path` - ls_py
     public static void listPythonFiles(String path) {
-
+        try {
+            File file = new File(path);
+            String[] fileList = file.list();
+            for(String fileOrDir : fileList) {
+                System.out.println(fileOrDir);
+            }
+        } catch (Exception e) {
+            System.out.printf("%s", e);
+        }
     };
 
     // выводит `true`, если `path` это директория, в других случаях `false` - id_dir
@@ -78,6 +86,7 @@ class MyFile {
 
     // завершает работу программы - exit
     public static void exit() {
+        System.out.println("Goodbye");
         System.exit(0);
     };
 }
