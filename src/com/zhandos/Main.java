@@ -13,19 +13,25 @@ public class Main {
             while (obj.hasNextLine()) {
                 System.out.println(obj.nextLine());
             }
-
-            MyFile file = new MyFile();
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 System.out.printf("> ");
                 String line = scanner.nextLine();
-                String words[] = line.split(" ", 2);
-                if (words[0].equals("ls")) {
-                    file.listDirectory(words[1]);
-                } else if (words[0].equals("exit")) {
-                    file.exit();
+                String[] words = line.split(" ", 3);
+                switch (words[0]) {
+                    case "ls" -> MyFile.listDirectory(words[1]);
+                    case "ls_py" -> MyFile.listPythonFiles(words[1]);
+                    case "is_dir" -> MyFile.isDirectory(words[1]);
+                    case "define" -> MyFile.define(words[1]);
+                    case "readmod" -> MyFile.printPermissions(words[1]);
+                    case "setmod" -> MyFile.setPermissions(words[1], words[2]);
+                    case "cat" -> MyFile.printContent(words[1]);
+                    case "append" -> MyFile.appendFooter(words[1]);
+                    case "bc" -> MyFile.createBackup(words[1]);
+                    case "greplong" -> MyFile.printLongestWord(words[1]);
+                    case "help" -> MyFile.help();
+                    case "exit" -> MyFile.exit();
                 }
-//                System.out.println(line);
             }
         } catch (Exception e) {
             System.out.printf("%s", e);
