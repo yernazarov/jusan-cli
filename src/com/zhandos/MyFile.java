@@ -2,6 +2,7 @@ package com.zhandos;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,9 @@ class MyFile {
     public static void isDirectory(String path) {
         try {
             File file = new File(path);
+            if (!file.exists()) {
+                System.out.println("There is no such file or directory");
+            }
             boolean isDir = file.isDirectory();
             System.out.println(isDir);
         } catch (Exception e) {
@@ -54,6 +58,9 @@ class MyFile {
     public static void define(String path) {
         try {
             File file = new File(path);
+            if (!file.exists()) {
+                System.out.println("There is no such file or directory");
+            }
             if (file.isFile()) {
                 System.out.println("файл");
             } else if (file.isDirectory()) {
@@ -133,13 +140,21 @@ class MyFile {
             LocalDate date = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String convertedDate = formatter.format(date);
-            String destDir = String.format("/tmp/${%s}.backup/", convertedDate);
-            String destFile = String.format("/tmp/${%s}.backup/%s", convertedDate, file.getName());
+            String destDir = String.format("/tmp/%s.backup/", convertedDate);
+            String destFile = String.format("/tmp/%s.backup/%s", convertedDate, file.getName());
             File dest = new File(destDir);
             if (!dest.exists()){
                 dest.mkdirs();
             }
-            Files.copy(Paths.get(path), Paths.get(destFile), StandardCopyOption.REPLACE_EXISTING);
+            Files.walk(Paths.get(path))
+                    .forEach(source -> {
+                        try {
+                            Files.copy(Paths.get(path), Paths.get(destFile), StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
         } catch (Exception e) {
             System.out.printf("%s", e);
         }

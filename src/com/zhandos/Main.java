@@ -15,7 +15,7 @@ public class Main {
             }
             Scanner scanner = new Scanner(System.in);
             while (true) {
-                System.out.printf("> ");
+                System.out.print("> ");
                 String line = scanner.nextLine();
                 String[] words = line.split(" ", 2);
                 switch (words[0]) {
@@ -31,6 +31,7 @@ public class Main {
                     case "greplong" -> MyFile.printLongestWord(words[1]);
                     case "help" -> MyFile.help();
                     case "exit" -> MyFile.exit();
+                    default -> System.out.println("Please enter valid command");
                 }
             }
         } catch (Exception e) {
