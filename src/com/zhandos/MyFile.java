@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 class MyFile {
     // выводит список всех файлов и директорий для `path` - ls
-    public static void listDirectory(String path) { //TODO only ls without path
+    public static void listDirectory(String path) {
         try {
             File file = new File(path);
             String[] fileList = file.list();

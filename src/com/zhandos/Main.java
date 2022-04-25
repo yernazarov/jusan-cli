@@ -17,7 +17,7 @@ public class Main {
             while (true) {
                 System.out.printf("> ");
                 String line = scanner.nextLine();
-                String[] words = line.split(" ", 3);
+                String[] words = line.split(" ", 2);
                 switch (words[0]) {
                     case "ls" -> MyFile.listDirectory(words[1]);
                     case "ls_py" -> MyFile.listPythonFiles(words[1]);
