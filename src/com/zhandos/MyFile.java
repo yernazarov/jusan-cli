@@ -10,7 +10,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
+import static java.nio.file.StandardCopyOption.*;
 class MyFile {
     // выводит список всех файлов и директорий для `path` - ls
     public static void listDirectory(String path) {
@@ -146,15 +148,9 @@ class MyFile {
             if (!dest.exists()){
                 dest.mkdirs();
             }
-            Files.walk(Paths.get(path))
-                    .forEach(source -> {
-                        try {
-                            Files.copy(Paths.get(path), Paths.get(destFile), StandardCopyOption.REPLACE_EXISTING);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-
+            try (Stream<Path> stream = Files.walk(Paths.get(path))) {
+                stream.forEach(source -> copy(source, Paths.get(destFile).resolve(Paths.get(path).relativize(source))));
+            }
         } catch (Exception e) {
             System.out.printf("%s", e);
         }
@@ -193,4 +189,12 @@ class MyFile {
         System.out.println("Goodbye");
         System.exit(0);
     };
+
+    private static void copy(Path source, Path dest) {
+        try {
+            Files.copy(source, dest, REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }
